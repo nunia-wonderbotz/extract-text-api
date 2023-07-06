@@ -13,6 +13,7 @@ cx-Logging==3.1.0
 debugpy==1.6.7
 decorator==5.1.1
 distlib==0.3.6
+dj-database-url==2.0.0
 Django==4.1.9
 django-cors-headers==4.1.0
 django-mssql==1.8
@@ -22,6 +23,7 @@ dnspython==2.3.0
 executing==1.2.0
 filelock==3.12.2
 greenlet==2.0.2
+gunicorn==20.1.0
 idna==3.4
 image==1.5.33
 ipykernel==6.23.0
@@ -29,6 +31,8 @@ ipython==8.13.2
 itsdangerous==2.1.2
 jedi==0.18.2
 Jinja2==3.1.2
+jupyter_client==8.3.0
+jupyter_core==5.3.1
 lief==0.13.0
 MarkupSafe==2.1.2
 matplotlib-inline==0.1.6
@@ -46,6 +50,7 @@ Pillow==9.5.0
 platformdirs==3.5.0
 prompt-toolkit==3.0.38
 psutil==5.9.5
+psycopg2==2.9.6
 pure-eval==0.2.2
 Pygments==2.15.1
 pymongo==4.3.3
