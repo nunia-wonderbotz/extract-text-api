@@ -37,12 +37,12 @@ def extract_list(request):
             extract_serializer.save()
             # return Response(extract_serializer.data, status=status.HTTP_201_CREATED)
             
-            # file = extract_serializer.data["file"]
+            file = extract_serializer.data["file"]
 
             # # URL of the PDF file
 
-            # root_url = 'https://extract-text-api.onrender.com'
-            # url = root_url+file
+            root_url = 'https://extract-text-api.onrender.com'
+            url = root_url+file
 
             # # Download the PDF file
             # response = requests.get(url)
@@ -66,7 +66,7 @@ def extract_list(request):
             # g_text = "\n".join(page_texts)
 
             # Return the response
-            return Response('Done', status=status.HTTP_201_CREATED)
+            return Response(url, status=status.HTTP_201_CREATED)
             
             # return Response(g_text, status=status.HTTP_201_CREATED)
         return Response(extract_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
