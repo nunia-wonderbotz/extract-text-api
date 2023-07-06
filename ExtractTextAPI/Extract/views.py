@@ -41,7 +41,7 @@ def extract_list(request):
 
             # URL of the PDF file
 
-            root_url = 'https://extract-text-api.onrender.com'
+            root_url = 'https://extract-text-api.onrender.com/'
             url = root_url+file
 
             # Download the PDF file
