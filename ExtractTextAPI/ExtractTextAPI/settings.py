@@ -92,11 +92,21 @@ WSGI_APPLICATION = 'ExtractTextAPI.wsgi.application'
 # }
 
 # Django MS SQl (Working)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mssql',
+#         'NAME': 'ExtractText',
+#         'HOST': 'localhost',
+#     }
+# }
+
+# Django MS SQl (Working)
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ExtractText',
-        'HOST': 'localhost',
+        'USER': 'nunia',
+        'PASSWORD': 'Extract@1998.',
     }
 }
 
