@@ -44,29 +44,29 @@ def extract_list(request):
             root_url = 'https://extract-text-api.onrender.com'
             url = root_url+file
 
-            # # Download the PDF file
-            # response = requests.get(url)
-            # pdf_data = BytesIO(response.content)
+            # Download the PDF file
+            response = requests.get(url)
+            pdf_data = BytesIO(response.content)
 
-            # # Create a PDF reader object
-            # reader = PdfReader(pdf_data)
+            # Create a PDF reader object
+            reader = PdfReader(pdf_data)
 
-            # # Print the number of pages in the PDF file
-            # n = len(reader.pages)
-            # print(f"Number of pages in PDF file: {n}")
+            # Print the number of pages in the PDF file
+            n = len(reader.pages)
+            print(f"Number of pages in PDF file: {n}")
 
-            # # Extract text from each page of the PDF file
-            # page_texts = []
-            # for i in range(len(reader.pages)):
-            #     page = reader.pages[i]
-            #     text = page.extract_text()
-            #     page_texts.append(f"Text on page {i+1}: {text}")
+            # Extract text from each page of the PDF file
+            page_texts = []
+            for i in range(len(reader.pages)):
+                page = reader.pages[i]
+                text = page.extract_text()
+                page_texts.append(f"Text on page {i+1}: {text}")
 
-            # # Concatenate the text from all pages into a single string
-            # g_text = "\n".join(page_texts)
+            # Concatenate the text from all pages into a single string
+            g_text = "\n".join(page_texts)
 
             # Return the response
-            return Response(url, status=status.HTTP_201_CREATED)
+            return Response(g_text, status=status.HTTP_201_CREATED)
             
             # return Response(g_text, status=status.HTTP_201_CREATED)
         return Response(extract_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
