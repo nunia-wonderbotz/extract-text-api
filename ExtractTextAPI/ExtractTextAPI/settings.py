@@ -153,7 +153,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # File Path
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 
 # Default primary key field type
@@ -165,5 +165,4 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8080',
     'https://extract-text-api.onrender.com',
-    'https://extract-text-api.onrender.com/'
 )
