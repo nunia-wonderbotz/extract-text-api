@@ -1,1 +1,1 @@
-# extract-text-api
+# Extract Text API using PostgreSQL
