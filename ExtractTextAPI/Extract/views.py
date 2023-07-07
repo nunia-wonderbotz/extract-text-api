@@ -11,7 +11,6 @@ from rest_framework.response import Response
 from PyPDF2 import PdfReader
 import requests
 from io import BytesIO
-import io
 
 
 # Index Page View
@@ -38,12 +37,7 @@ def extract_list(request):
             extract_serializer.save()
             # return Response(extract_serializer.data, status=status.HTTP_201_CREATED)
             
-            file = extract_serializer.data["file"]
-
-            # # URL of the PDF file
-
-            # root_url = 'https://extract-text-api.onrender.com'
-            # url = root_url + file
+            
 
             # # Download the PDF file
             # response = requests.get(url)
@@ -66,31 +60,41 @@ def extract_list(request):
             # # Concatenate the text from all pages into a single string
             # g_text = "\n".join(page_texts)
             
+            file = extract_serializer.data["file"]
+
+            # # URL of the PDF file
+
+            root_url = 'https://extract-text-api.onrender.com'
+            url = root_url + file
             
-            def extract_pdf_text(url):
-                response = requests.get(url)
-                response.raise_for_status()  # Check response status
+            def extract_data_from_url(url):
+                response = requests.get(url, stream=True)
+                if response.status_code == 200:
+                    # Create a BytesIO object to hold the PDF content
+                    pdf_data = BytesIO(response.content)
+                    
+                    # Create a PdfReader object using the BytesIO object
+                    pdf_reader = PdfReader(pdf_data)
+                    
+                    # Process the PDF content
+                    for page in pdf_reader.pages:
+                        # Process each page of the PDF
+                        # Example: Print the page content
+                        # print(page.extract_text())
+                        
+                        # Return the response
+                        return Response(page.extract_text(), status=status.HTTP_201_CREATED)
+                    
+                    print("PDF content extracted successfully.")
+                else:
+                    print("Failed to retrieve data from URL")
 
-                pdf_data = response.content
-                pdf_stream = io.BytesIO(pdf_data)  # Convert to seekable stream
-                reader = PdfReader(pdf_stream)
+                # Usage example
+                url = "https://extract-text-api.onrender.com/media/my_file/NUNSU01.pdf"
+                extract_data_from_url(url)
 
-                page_texts = []
-                for page in reader.pages:
-                    text = page.extract_text()
-                    page_texts.append(text)
-
-                g_text = "\n".join(page_texts)
-                return g_text
-
-            # Usage example
-            url = 'https://extract-text-api.onrender.com'
-            f_url = url + file
-            extracted_text = extract_pdf_text(f_url)
-            # print(extracted_text)
-
-            # Return the response
-            return Response(extracted_text, status=status.HTTP_201_CREATED)
+            # # Return the response
+            # return Response(g_text, status=status.HTTP_201_CREATED)
             
             # return Response(g_text, status=status.HTTP_201_CREATED)
         return Response(extract_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
