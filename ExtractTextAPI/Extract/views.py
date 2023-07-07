@@ -67,7 +67,7 @@ def extract_list(request):
             g_text = "\n".join(page_texts)
 
             # Return the response
-            return Response(g_text, status=status.HTTP_201_CREATED)
+            return Response(url, status=status.HTTP_201_CREATED)
             
             # return Response(g_text, status=status.HTTP_201_CREATED)
         return Response(extract_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
