@@ -60,9 +60,9 @@ def extract_list(request):
             # # Concatenate the text from all pages into a single string
             # g_text = "\n".join(page_texts)
             
-            file = extract_serializer.data["file"]
-            root_url = 'https://extract-text-api.onrender.com'
-            url = root_url + file
+            # file = extract_serializer.data["file"]
+            # root_url = 'https://extract-text-api.onrender.com'
+            # url = root_url + file
 
             def extract_data_from_url(url):
                 response = requests.get(url, stream=True)
