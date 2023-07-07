@@ -51,7 +51,7 @@ def extract_list(request):
 
             # Return the extracted text in the response
             response_data = {
-                'text': f_text,
+                'text': response_text,
                 'message': 'Text extracted successfully!',
             }
         return Response(response_data, status=status.HTTP_200_OK)
