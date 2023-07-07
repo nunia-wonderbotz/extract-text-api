@@ -45,13 +45,11 @@ def extract_list(request):
         # Extract text from each page of the PDF file
         for i, page in enumerate(reader.pages):
             text = page.extract_text()
-            f_text = f"Text on page {i+1}: {text}"
-            # print(f"Text on page {i+1}: {text}")
-            response_text = text + response_data
+            print(f"Text on page {i+1}: {text}")
 
             # Return the extracted text in the response
             response_data = {
-                'text': response_text,
+                'text': text,
                 'message': 'Text extracted successfully!',
             }
         return Response(response_data, status=status.HTTP_200_OK)
