@@ -61,44 +61,40 @@ def extract_list(request):
             # g_text = "\n".join(page_texts)
             
             file = extract_serializer.data["file"]
+        root_url = 'https://extract-text-api.onrender.com'
+        url = root_url + file
 
-            # # URL of the PDF file
+        def extract_data_from_url(url):
+            response = requests.get(url, stream=True)
+            if response.status_code == 200:
+                # Create a BytesIO object to hold the PDF content
+                pdf_data = BytesIO(response.content)
+                
+                # Create a PdfReader object using the BytesIO object
+                pdf_reader = PdfReader(pdf_data)
+                
+                # Process the PDF content
+                g_text = ""
+                for page in pdf_reader.pages:
+                    # Process each page of the PDF
+                    # Example: Append the page content to g_text
+                    g_text += page.extract_text()
+                
+                print("PDF content extracted successfully.")
+                return g_text
+            else:
+                print("Failed to retrieve data from URL")
+                return None
 
-            root_url = 'https://extract-text-api.onrender.com'
-            url = root_url + file
-            
-            def extract_data_from_url(url):
-                response = requests.get(url, stream=True)
-                if response.status_code == 200:
-                    # Create a BytesIO object to hold the PDF content
-                    pdf_data = BytesIO(response.content)
-                    
-                    # Create a PdfReader object using the BytesIO object
-                    pdf_reader = PdfReader(pdf_data)
-                    
-                    # Process the PDF content
-                    for page in pdf_reader.pages:
-                        # Process each page of the PDF
-                        # Example: Print the page content
-                        # print(page.extract_text())
-                        
-                        # Return the response
-                        return Response(page.extract_text(), status=status.HTTP_201_CREATED)
-                    
-                    print("PDF content extracted successfully.")
-                else:
-                    print("Failed to retrieve data from URL")
+        # Usage example
+        url = "https://extract-text-api.onrender.com/media/my_file/NUNSU01.pdf"
+        g_text = extract_data_from_url(url)
 
-                # Usage example
-                url = "https://extract-text-api.onrender.com/media/my_file/NUNSU01.pdf"
-                extract_data_from_url(url)
-
-            # # Return the response
-            # return Response(g_text, status=status.HTTP_201_CREATED)
-            
-            # return Response(g_text, status=status.HTTP_201_CREATED)
-        return Response(extract_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        # Return the response
+        if g_text:
+            return Response(g_text, status=status.HTTP_201_CREATED)
+        else:
+            return Response("Failed to retrieve PDF content", status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         count = Extract.objects.all().delete()
         return Response({'message': '{} Extracts were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
