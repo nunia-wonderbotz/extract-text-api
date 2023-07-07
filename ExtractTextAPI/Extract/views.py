@@ -47,7 +47,7 @@ def extract_list(request):
             text = page.extract_text()
             f_text = f"Text on page {i+1}: {text}"
             # print(f"Text on page {i+1}: {text}")
-            response_text = f_text + response_data
+            response_text = text + response_data
 
             # Return the extracted text in the response
             response_data = {
