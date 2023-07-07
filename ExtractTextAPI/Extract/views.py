@@ -37,12 +37,13 @@ def extract_list(request):
             extract_serializer.save()
             # return Response(extract_serializer.data, status=status.HTTP_201_CREATED)
             
-            file = extract_serializer.data["file"]
+            # file = extract_serializer.data["file"]
+            file = '/media/my_file/NUNSU01.pdf'
 
             # # URL of the PDF file
 
             root_url = 'https://extract-text-api.onrender.com'
-            url = root_url+file
+            url = root_url + file
 
             # Download the PDF file
             response = requests.get(url)
@@ -60,13 +61,13 @@ def extract_list(request):
             for i in range(len(reader.pages)):
                 page = reader.pages[i]
                 text = page.extract_text()
-                # page_texts.append(f"Text on page {i+1}: {text}")
+                page_texts.append(f"Text on page {i+1}: {text}")
 
             # Concatenate the text from all pages into a single string
             g_text = "\n".join(page_texts)
 
             # Return the response
-            return Response(text, status=status.HTTP_201_CREATED)
+            return Response(g_text, status=status.HTTP_201_CREATED)
             
             # return Response(g_text, status=status.HTTP_201_CREATED)
         return Response(extract_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -4,8 +4,8 @@ from PyPDF2 import PdfReader
 
 # URL of the PDF file
 
-root_url = 'http://127.0.0.1:8080/'
-url = root_url+'media/my_file/NUNSU01.pdf'
+root_url = 'https://extract-text-api.onrender.com'
+url = root_url + '/media/my_file/NUNSU01.pdf'
 
 # Download the PDF file
 response = requests.get(url)
