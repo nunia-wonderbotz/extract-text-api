@@ -33,38 +33,30 @@ def extract_list(request):
         return Response(extracts_serializer.data)
 
     elif request.method == 'POST':
-        extract_serializer = ExtractSerializer(data=request.data)
-        if extract_serializer.is_valid():
-            extract_serializer.save()
-            
-            file = extract_serializer.data["file"]
-            root_url = 'https://extract-text-api.onrender.com'
-            url = root_url + file
+        file = request.FILES.get('file')
 
-            # Download the PDF file
-            response = requests.get(url)
-            pdf_data = BytesIO(response.content)
+        # Read the file content and create a BytesIO object
+        file_content = file.read()
+        pdf_data = BytesIO(file_content)
 
-            # Create a PDF reader object
-            reader = PdfReader(pdf_data)
+        # Create a PDF reader object
+        reader = PdfReader(pdf_data)
 
-            # Extract text from each page of the PDF file
-            page_texts = []
-            for i in range(len(reader.pages)):
-                page = reader.pages[i]
-                text = page.extract_text()
-                page_texts.append(f"Text on page {i+1}: {text}")
+        # Extract text from each page of the PDF file
+        page_texts = []
+        for i, page in enumerate(reader.pages):
+            text = page.extract_text()
+            page_texts.append(f"Text on page {i+1}: {text}")
 
-            # Concatenate the text from all pages into a single string
-            g_text = "\n".join(page_texts)
+        # Concatenate the text from all pages into a single string
+        extracted_text = "\n".join(page_texts)
 
-            # Return the custom response
-            response_data = {
-                'text': g_text,
-                'message': 'Text extracted successfully',
-            }
-            return Response(response_data, status=status.HTTP_201_CREATED)
-        return Response(extract_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Return the extracted text in the response
+        response_data = {
+            'text': extracted_text,
+            'message': 'Text extracted successfully',
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
 
     elif request.method == 'DELETE':
         count = Extract.objects.all().delete()
