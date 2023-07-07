@@ -43,19 +43,16 @@ def extract_list(request):
         reader = PdfReader(pdf_data)
 
         # Extract text from each page of the PDF file
-        page_texts = []
         for i, page in enumerate(reader.pages):
             text = page.extract_text()
-            page_texts.append(f"Text on page {i+1}: {text}")
+            f_text = f"Text on page {i+1}: {text}"
+            # print(f"Text on page {i+1}: {text}")
 
-        # Concatenate the text from all pages into a single string
-        extracted_text = "\n".join(page_texts)
-
-        # Return the extracted text in the response
-        response_data = {
-            'text': extracted_text,
-            'message': 'Text extracted successfully',
-        }
+            # Return the extracted text in the response
+            response_data = {
+                'text': f_text,
+                'message': 'Text extracted successfully!',
+            }
         return Response(response_data, status=status.HTTP_200_OK)
 
     elif request.method == 'DELETE':
