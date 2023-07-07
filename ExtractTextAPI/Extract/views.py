@@ -45,8 +45,8 @@ def extract_list(request):
             url = root_url + file
 
             # Download the PDF file
-            response = requests.get(url)
-            pdf_data = BytesIO(response.content)
+            # response = requests.get(url)
+            # pdf_data = BytesIO(response.content)
 
             # # Create a PDF reader object
             # reader = PdfReader(pdf_data)
