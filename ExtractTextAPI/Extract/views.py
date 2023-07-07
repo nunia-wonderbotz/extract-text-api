@@ -37,64 +37,40 @@ def extract_list(request):
             extract_serializer.save()
             # return Response(extract_serializer.data, status=status.HTTP_201_CREATED)
             
-            
+            file = extract_serializer.data["file"]
 
-            # # Download the PDF file
-            # response = requests.get(url)
-            # pdf_data = BytesIO(response.content)
+            # # URL of the PDF file
 
-            # # Create a PDF reader object
-            # reader = PdfReader(pdf_data)
+            root_url = 'https://extract-text-api.onrender.com'
+            url = root_url + file
 
-            # # Print the number of pages in the PDF file
-            # # n = len(reader.pages)
-            # # print(f"Number of pages in PDF file: {n}")
+            # Download the PDF file
+            response = requests.get(url)
+            pdf_data = BytesIO(response.content)
 
-            # # Extract text from each page of the PDF file
-            # page_texts = []
-            # for i in range(len(reader.pages)):
-            #     page = reader.pages[i]
-            #     text = page.extract_text()
-            #     page_texts.append(f"Text on page {i+1}: {text}")
+            # Create a PDF reader object
+            reader = PdfReader(pdf_data)
 
-            # # Concatenate the text from all pages into a single string
-            # g_text = "\n".join(page_texts)
-            
-            # file = extract_serializer.data["file"]
-            # root_url = 'https://extract-text-api.onrender.com'
-            # url = root_url + file
+            # Print the number of pages in the PDF file
+            # n = len(reader.pages)
+            # print(f"Number of pages in PDF file: {n}")
 
-            def extract_data_from_url(url):
-                response = requests.get(url, stream=True)
-                if response.status_code == 200:
-                    # Create a BytesIO object to hold the PDF content
-                    pdf_data = BytesIO(response.content)
-                    
-                    # Create a PdfReader object using the BytesIO object
-                    pdf_reader = PdfReader(pdf_data)
-                    
-                    # Process the PDF content
-                    g_text = ""
-                    for page in pdf_reader.pages:
-                        # Process each page of the PDF
-                        # Example: Append the page content to g_text
-                        g_text += page.extract_text()
-                    
-                    print("PDF content extracted successfully.")
-                    return g_text
-                else:
-                    print("Failed to retrieve data from URL")
-                    return None
+            # Extract text from each page of the PDF file
+            page_texts = []
+            for i in range(len(reader.pages)):
+                page = reader.pages[i]
+                text = page.extract_text()
+                page_texts.append(f"Text on page {i+1}: {text}")
 
-            # Usage example
-            url = "https://extract-text-api.onrender.com/media/my_file/NUNSU01.pdf"
-            g_text = extract_data_from_url(url)
+            # Concatenate the text from all pages into a single string
+            g_text = "\n".join(page_texts)
 
             # Return the response
-            if g_text:
-                return Response(g_text, status=status.HTTP_201_CREATED)
-            else:
-                return Response("Failed to retrieve PDF content", status=status.HTTP_400_BAD_REQUEST)
+            return Response(g_text, status=status.HTTP_201_CREATED)
+            
+            # return Response(g_text, status=status.HTTP_201_CREATED)
+        return Response(extract_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     elif request.method == 'DELETE':
         count = Extract.objects.all().delete()
         return Response({'message': '{} Extracts were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
