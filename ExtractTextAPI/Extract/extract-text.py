@@ -1,27 +1,27 @@
 import requests
 from io import BytesIO
+import io
 from PyPDF2 import PdfReader
 
-# URL of the PDF file
+def extract_pdf_text(url):
+    response = requests.get(url)
+    response.raise_for_status()  # Check response status
 
-root_url = 'https://extract-text-api.onrender.com'
-url = root_url + '/media/my_file/NUNSU01.pdf'
+    pdf_data = response.content
+    pdf_stream = io.BytesIO(pdf_data)  # Convert to seekable stream
+    reader = PdfReader(pdf_stream)
 
-# Download the PDF file
-response = requests.get(url)
-pdf_data = BytesIO(response.content)
+    page_texts = []
+    for page in reader.pages:
+        text = page.extract_text()
+        page_texts.append(text)
 
-# Create a PDF reader object
-reader = PdfReader(pdf_data)
+    g_text = "\n".join(page_texts)
+    return g_text
 
-# Print the number of pages in the PDF file
-n = len(reader.pages)
-print(f"Number of pages in PDF file: {n}")
-
-# Get the text from each page in the PDF file
-for i in range(n):
-    page = reader.pages[i]
-
-    # Extract text from the page
-    text = page.extract_text()
-    print(f"Text on page {i+1}: {text}")
+# Usage example
+file = '/media/my_file/NUNSU01.pdf'
+url = 'https://extract-text-api.onrender.com'
+f_url = url + file
+extracted_text = extract_pdf_text(f_url)
+print(extracted_text)
