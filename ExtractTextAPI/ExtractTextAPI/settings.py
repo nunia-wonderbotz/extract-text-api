@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Django REST framework 
     'rest_framework',
-    # Tutorials application 
+    # Extract application 
     'Extract.apps.ExtractConfig',
+    # OCR application
+    'OCR.apps.OcrConfig',
     # CORS
     'corsheaders',
 ]
@@ -102,19 +104,19 @@ WSGI_APPLICATION = 'ExtractTextAPI.wsgi.application'
 # }
 
 # Django PostgreSQL (Working)
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'ExtractText',
-#         'USER': 'nunia',
-#         'PASSWORD': 'Extract@1998.',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ExtractText',
+        'USER': 'nunia',
+        'PASSWORD': 'Extract@1998.',
+    }
+}
 
 # Render PostgreSQL (Working)
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-}
+# DATABASES = {
+#     'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
