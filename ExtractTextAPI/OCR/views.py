@@ -40,15 +40,24 @@ def ocr_list(request):
         base64_data = request.data.get('base64_data')
 
         # Decode base64 data and create a BytesIO object
-        # file_content = base64.b64decode(base64_data)
-        # pdf_data = Image.open(BytesIO(file_content))
+        file_content = base64.b64decode(base64_data)
+        image_data = BytesIO(file_content)
 
-        # # Perform OCR on the PDF file
-        # text = pytesseract.image_to_string(pdf_data, lang='eng')
+        # Open the image file
+        try:
+            image = Image.open(image_data)
+        except IOError:
+            response_data = {
+                'message': 'Invalid image file.',
+            }
+            return Response(response_data, status=400)
+
+        # Perform OCR on the image
+        text = pytesseract.image_to_string(image, lang='eng')
 
         # Return the extracted text in the response
         response_data = {
-            'text': base64_data,
+            'text': text,
             'message': 'Text extracted successfully!',
         }
         return Response(response_data, status=200)
